@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include "sommet.h"
 
-void init_sommet(struct sommet S){
-  S.num=0;
-  S.quantiteALivrer=0;
-  S.liste=(struct liste_arete*)(malloc(sizeof(struct liste_arete)));
-  init_liste_arete(S.liste);
+void init_sommet(struct sommet* S){
+  S->num=0;
+  S->quantiteALivrer=0;
+  S->liste=(struct liste_arete*)(malloc(sizeof(struct liste_arete)));
+  init_liste_arete(S->liste);
 }
 
 struct sommet* getSommet(struct sommet H[],struct liste_arete* L, int k){

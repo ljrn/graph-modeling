@@ -11,6 +11,7 @@ void ajout_en_queue_arete(int idx, int cost, struct liste_arete* L){
   struct maillon_arete* nvMaillon=(struct maillon_arete*)(malloc(sizeof(struct maillon_arete)));
   nvMaillon->poids=cost;
   nvMaillon->idxSommet=idx;
+  nvMaillon->suivant=NIL;
   if(L->tete == NIL){
     L->tete=nvMaillon;
   }else{
@@ -20,7 +21,19 @@ void ajout_en_queue_arete(int idx, int cost, struct liste_arete* L){
     }
     courant->suivant=nvMaillon;
   }
+  L->nbelem++;
 }
+
+void affiche_liste_arete(struct liste_arete* L){
+  if(L->tete != NIL){
+    struct maillon_arete* courant=L->tete;
+    while(courant!=NIL){
+      printf("Vers: %d   Poids: %d\n",courant->idxSommet, courant->poids);
+      courant=courant->suivant;
+    }
+  }
+}
+
 void clear_liste_arete(struct liste_arete* L){
   if(L->tete != NIL){
     if(L->tete->suivant!=NIL){

@@ -15,4 +15,5 @@ struct liste_arete{
 
 extern void init_liste_arete(struct liste_arete*);
 extern void ajout_en_queue_arete(int idx, int cost, struct liste_arete* L);
+extern void affiche_liste_arete(struct liste_arete*);
 extern void clear_liste_arete(struct liste_arete*);
