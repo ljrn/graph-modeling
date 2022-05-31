@@ -1,5 +1,6 @@
 #include "liste_arete.h"
 #include <stdlib.h>
+#include <stdio.h>
 //liste_arete.c
 
 void init_liste_arete(struct liste_arete* L){
