@@ -1,5 +1,10 @@
 #include "sommet.h"
 
-int main(){
+ readFile(){
+  
+}
 
+int main(){
+  FILE* f;
+  f=fopen();
 }
