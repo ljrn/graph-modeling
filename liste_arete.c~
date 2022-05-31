@@ -1,0 +1,9 @@
+void init_liste_arete(){
+
+}
+void ajout_en_queue_arete(int idx, int cost, struct sommet* s){
+
+}
+void clear_arete(){
+
+}

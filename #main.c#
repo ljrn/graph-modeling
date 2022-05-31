@@ -9,5 +9,6 @@ int main(int argc, char** argv){
   fscanf(f,"%d",&nbSommets);
   fscanf(f,"%d",&capaciteMax);
   printf("N= %d, Q=%d\n",nbSommets,capaciteMax);
+  
   return 0;
 }
