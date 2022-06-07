@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 #include "sommet.h"
 void readFile(FILE* f,int T[], int q[],int size,int** dist){
   for(int i=0;i<size;i++){
@@ -69,6 +70,54 @@ void split(struct sommet H[],int T[],int q[] ,int N, int Q,int **dist){
   }
 }
 
+int dijkstra(int N, struct sommet H[]){
+  int Pere[N];
+  bool Mark[N];
+  Pere[0]=0;
+  int pi[N];
+  pi[0]=0;
+  Mark[0]=false;
+  for(int i=1;i<N+1;i++){
+    Pere[i]=-1;
+    pi[i]=INT_MAX;
+    Mark[i]=false;
+  }
+  bool fini=false;
+  int x=-1;
+  while(x<N+1 && !fini){
+    fini=true;
+    int min;
+    int idxFalse=0;
+    while(idxFalse<N+1 && Mark[idxFalse]==true){
+      idxFalse++;
+    }
+    if(idxFalse<N+1){
+      min=pi[idxFalse];
+      x=idxFalse;
+      for(int i=idxFalse;i<N+1;i++){
+	if(Mark[i]==false && pi[i]<min){
+	  min=pi[i];
+	  x=i;
+	}
+      }
+      fini=false;
+      Mark[x]=true;
+      struct liste_arete* listeX=H[x].liste;
+      if(listeX->tete!=NIL){
+	struct maillon_arete* courant=listeX->tete;
+	while(courant!=NIL){
+	  if(pi[courant->idxSommet]>(pi[x]+courant->poids)){
+	    pi[courant->idxSommet]=pi[x]+courant->poids;
+	    Pere[courant->idxSommet]=x;
+	  }
+	  courant=courant->suivant;
+	}
+      }
+    }
+  }
+  return pi[N];
+}
+
 int main(int argc, char** argv){
   FILE* f;
   f=fopen(argv[1], "r");
@@ -109,6 +158,8 @@ int main(int argc, char** argv){
     printf("Sommet %d\t",H[i].num);
     affiche_liste_arete(H[i].liste);
   }
+
+  printf("Le coût minimal est de %d\n",dijkstra(nbSommets,H));
   
   return 0;
 }
