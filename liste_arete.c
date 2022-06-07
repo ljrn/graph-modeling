@@ -34,6 +34,24 @@ void affiche_liste_arete(struct liste_arete* L){
   }
 }
 
+struct maillon_arete* minimum(struct liste_arete* L){
+  if(L->tete==NIL){
+    return NIL;
+  }else{
+    struct maillon_arete* courant=L->tete;
+    struct maillon_arete* ret=courant;
+    int min=courant->poids;
+    while(courant->suivant !=NIL){
+      courant=courant->suivant;
+      if(courant->poids<min){
+	min=courant->poids;
+	ret=courant;
+      }
+    }
+    return ret;
+  }
+}
+
 void clear_liste_arete(struct liste_arete* L){
   if(L->tete != NIL){
     if(L->tete->suivant!=NIL){

@@ -69,6 +69,15 @@ void split(struct sommet H[],int T[],int q[] ,int N, int Q,int **dist){
   }
 }
 
+void dijkstra(int N){
+  int Pere[N];
+  bool Mark[N];
+  for(int i=0;i<N;i++){
+    Pere[i]=0;
+    Mark[i]=false;
+  }
+}
+
 int main(int argc, char** argv){
   FILE* f;
   f=fopen(argv[1], "r");
