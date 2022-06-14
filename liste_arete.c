@@ -7,7 +7,7 @@ void init_liste_arete(struct liste_arete* L){
   L->nbelem=0;
   L->tete=NIL;
 }
-void ajout_en_queue_arete(int idx, int cost, struct liste_arete* L){
+void ajout_en_queue_arete(int idx, double cost, struct liste_arete* L){
   struct maillon_arete* nvMaillon=(struct maillon_arete*)(malloc(sizeof(struct maillon_arete)));
   nvMaillon->poids=cost;
   nvMaillon->idxSommet=idx;
@@ -28,7 +28,7 @@ void affiche_liste_arete(struct liste_arete* L){
   if(L->tete != NIL){
     struct maillon_arete* courant=L->tete;
     while(courant!=NIL){
-      printf("Vers: %d   Poids: %d\n",courant->idxSommet, courant->poids);
+      printf("Vers: %d   Poids: %lf\n",courant->idxSommet, courant->poids);
       courant=courant->suivant;
     }
   }
@@ -40,7 +40,7 @@ struct maillon_arete* minimum(struct liste_arete* L){
   }else{
     struct maillon_arete* courant=L->tete;
     struct maillon_arete* ret=courant;
-    int min=courant->poids;
+    double min=courant->poids;
     while(courant->suivant !=NIL){
       courant=courant->suivant;
       if(courant->poids<min){
