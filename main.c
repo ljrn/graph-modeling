@@ -4,7 +4,7 @@
 #include <float.h>
 #include "sommet.h"
 void readFile(FILE* f,int T[], int q[],int size,double** dist){
-  for(int i=0;i<size;i++){
+  for(int i=1;i<size+1;i++){
     int lecture;
     fscanf(f,"%d",&lecture);
     q[i]=lecture;
@@ -33,16 +33,17 @@ int valeurMinLigne(double* ligne, int taille, bool mark[], int indice){
   return res;
 }
 
-void tourGeant(int T[], int q[],int N, double** dist){
+void tourGeant(int T[], int q[],int N, double** dist, int debut){
   bool* mark=(bool*)(malloc((N+1)*sizeof(bool)));
   for(int k=0;k<N+1;k++){
     mark[k]=false;
   }
-  int i=0;
+  mark[0]=true;
+  int i=debut;
   int tmp;
-  mark[i]=true;
-  T[0]=0;
-  for(int j=1;j<N+1;j++){
+  mark[debut]=true;
+  T[1]=debut;
+  for(int j=2;j<N+1;j++){
     tmp=valeurMinLigne(dist[i],N,mark,i);
     T[j]=tmp;
     i=tmp;
@@ -57,20 +58,20 @@ void tourGeant(int T[], int q[],int N, double** dist){
 
 void split(struct sommet H[],int T[],int q[] ,int N, int Q,double **dist){
   double cost;
-  for(int i=0;i<N+1;i++){
+  for(int i=1;i<N+1;i++){
     int j=i;
     int load=0;
-    while(j<N && load <=Q){
+    while(j<=N && load <Q){
       load+=q[T[j]];
       if(i==j){
-	cost=dist[0][i+1]+dist[i+1][0];
+	cost=dist[0][T[i]]+dist[T[i]][0];
       }else{
-	cost=cost-dist[j][0]+dist[j][j+1]+dist[j+1][0];
+	cost=cost-dist[T[j-1]][0]+dist[T[j-1]][T[j]]+dist[T[j]][0];
       }
       if(load<=Q){
-	printf("i= %d et j=%d\n",i,j+1);
-	H[i].num=i;
-	ajout_en_queue_arete(T[j+1],cost,H[i].liste);
+	printf("i= %d et j=%d\n",i-1,j);
+	H[i-1].num=i-1;
+	ajout_en_queue_arete(j,cost,H[i-1].liste);
       }
       j++;
     }
@@ -135,7 +136,7 @@ int main(int argc, char** argv){
   fscanf(f,"%d",&capaciteMax);
   printf("N= %d, Q=%d\n",nbSommets,capaciteMax);
   int* T=(int*)(malloc((nbSommets+1)*sizeof(int)));
-  int* q=(int*)(malloc(nbSommets*sizeof(int)));
+  int* q=(int*)(malloc((nbSommets+1)*sizeof(int)));
   double** dist=(double**)(malloc((nbSommets+1)*sizeof(int*)));
   for(int i=0;i<nbSommets+1;i++){
     dist[i]=(double*)(malloc((nbSommets+1)*sizeof(double)));
@@ -155,7 +156,10 @@ int main(int argc, char** argv){
   for(int i=0; i<nbSommets+1; i++){
     init_sommet(&H[i]);
   }
-  tourGeant(T,q,nbSommets,dist);
+  int debut;
+  printf("Par quel client voulez-vous commencer ?\n");
+  scanf("%d",&debut);
+  tourGeant(T,q,nbSommets,dist, debut);
   for(int i=0;i<nbSommets+1;i++){
     printf("Sommet %d\t",T[i]);
   }
