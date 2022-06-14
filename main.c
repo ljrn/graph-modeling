@@ -69,7 +69,6 @@ void split(struct sommet H[],int T[],int q[] ,int N, int Q,double **dist){
 	cost=cost-dist[T[j-1]][0]+dist[T[j-1]][T[j]]+dist[T[j]][0];
       }
       if(load<=Q){
-	printf("i= %d et j=%d\n",i-1,j);
 	H[i-1].num=i-1;
 	ajout_en_queue_arete(j,cost,H[i-1].liste);
       }
@@ -97,15 +96,12 @@ double dijkstra(int N, struct sommet H[]){
     double min=DBL_MAX;
     int x=-1;
     for(int i=0;i<N+1;i++){
-      //printf("Mark[%d]= %d, pi[%d]=%lf\n",i,Mark[i],i,pi[i]);
       if(Mark[i]==0 && pi[i]<=min){
 	min=pi[i];
 	x=i;
       }
     }
     if(x>=0){
-      //printf("Sommet choisi: %d\n",x);
-      //x=idxFalse;
       fini=false;
       Mark[x]=1;
       struct liste_arete* listeX=H[x].liste;
@@ -120,9 +116,6 @@ double dijkstra(int N, struct sommet H[]){
 	}
       }
     }
-  }
-  for(int i=0;i<N+1;i++){
-    printf("%lf\n",pi[i]);
   }
   return pi[N];
 }
@@ -142,16 +135,11 @@ int main(int argc, char** argv){
     dist[i]=(double*)(malloc((nbSommets+1)*sizeof(double)));
   }
   readFile(f,T,q,nbSommets,dist);
-  for(int i=0;i<nbSommets;i++){
-    printf("Num: %d, Qte: %d\n",T[i],q[i]);
-  }
-  for(int i=0;i<nbSommets+1;i++){
-    for(int j=0;j<nbSommets+1;j++){
-      printf("%lf\t",dist[i][j]);
-    }
-    printf("\n");
-  }
 
+  printf("============================LECTURE DU FICHIER========================\n");
+  for(int i=0;i<nbSommets;i++){
+    printf("Num: %d,Qte: %d\n",i,q[i]);
+  }
   struct sommet* H=(struct sommet*)(malloc((nbSommets+1)*sizeof(struct sommet)));
   for(int i=0; i<nbSommets+1; i++){
     init_sommet(&H[i]);
@@ -160,18 +148,20 @@ int main(int argc, char** argv){
   printf("Par quel client voulez-vous commencer ?\n");
   scanf("%d",&debut);
   tourGeant(T,q,nbSommets,dist, debut);
+  printf("\n\n\n============================TOUR GEANT========================\n");
   for(int i=0;i<nbSommets+1;i++){
     printf("Sommet %d\t",T[i]);
   }
   printf("\n");
   
   split(H,T,q,nbSommets,capaciteMax,dist);
+  printf("\n\n\n============================PROCEDURE SPLIT========================\n");
   for(int i=0;i<nbSommets+1;i++){
     printf("Sommet %d\t",H[i].num);
     affiche_liste_arete(H[i].liste);
   }
 
-  printf("\nLe coût minimal est de %lf\n",dijkstra(nbSommets,H));
+  printf("\n\n\nLe coût minimal est de %lf en démarrant par le client %d\n\n\n",dijkstra(nbSommets,H),debut);
   
   return 0;
 }
